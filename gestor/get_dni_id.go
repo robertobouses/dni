@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func filterDNI(w http.ResponseWriter, r *http.Request) {
+func FilterDNI(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	letra := strings.ToUpper(params["letra"])
 
