@@ -3,7 +3,6 @@ package gestor
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -32,8 +31,8 @@ func CreateDNI(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.Exec("INSERT INTO dni (numero, letra, nombre) VALUES ($1, $2, $3)", dni.Numero, dni.Letra, dni.Nombre)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
-
 	w.WriteHeader(http.StatusCreated)
 }

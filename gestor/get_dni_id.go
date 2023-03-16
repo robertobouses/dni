@@ -3,7 +3,6 @@ package gestor
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -20,7 +19,8 @@ func FilterDNI(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query("SELECT numero, letra, nombre FROM dni WHERE letra = $1", letra)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	defer rows.Close()
 
@@ -28,7 +28,8 @@ func FilterDNI(w http.ResponseWriter, r *http.Request) {
 		var dni DNI
 		err := rows.Scan(&dni.Numero, &dni.Letra, &dni.Nombre)
 		if err != nil {
-			log.Fatal(err)
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 		dniList = append(dniList, dni)
 	}
